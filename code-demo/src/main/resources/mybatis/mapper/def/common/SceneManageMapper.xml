@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper
+	namespace="com.boco.rnop.framework.component.scene.mapper.def.ISceneManageMapper">
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneBaseInfoPO"
+		id="sceneBaseInfoPO">
+		<result column="int_Id" property="intId" />
+		<result column="name" property="name" />
+		<result column="parent_Id" property="parentId" />
+		<result column="child_count" property="childCount" />
+	</resultMap>
+
+
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneDetailedInfoPO"
+		id="sceneDetailedInfo">
+		<result column="int_Id" property="intId" />
+		<result column="name" property="name" />
+		<result column="region_Id" property="regionId" />
+		<result column="region_Name" property="regionName" />
+		<result column="city_Id" property="cityId" />
+		<result column="image_Name" property="imageName" />
+		<result column="city_Name" property="cityName" />
+		<result column="acquire_Way" property="acquireWay" />
+		<result column="create_Userid" property="createUserid" />
+		<result column="create_Username" property="createUsername" />
+		<result column="geometry_Id" property="geometryId" />
+		<result column="scene_Centriod_Lon" property="sceneCentriodLon" />
+		<result column="scene_Centriod_Lat" property="sceneCentriodLat" />
+		<result column="geojson" property="geojson" />
+		<result column="geojson_Type" property="geojsonType" />
+		<result column="scene_Length" property="sceneLength" />
+		<result column="scene_Area" property="sceneArea" />
+		<result column="description" property="description" />
+		<result column="cur_Level" property="curLevel" />
+		<result column="root_Id" property="rootId" />
+		<result column="parent_Id" property="parentId" />
+		<result column="order_No" property="orderNo" />
+		<result column="technology" property="technology" />
+		<result column="is_Need_Scene_Size" property="isNeedSceneSize" />
+		<result column="is_Need_Gird_Size" property="isNeedGirdSize" />
+		<result column="is_Need_Cell_Size" property="isNeedCellSize" />
+		<result column="is_Need_Bigdata_Sum"
+			property="isNeedBigdataSum" />
+		<result column="is_Need_Performance_Sum"
+			property="isNeedPerformanceSum" />
+		<result column="is_Locking" property="isLocking" />
+		<result column="is_Sharing" property="isSharing" />
+		<result column="create_Time" property="createTime" />
+		<result column="parent_Scene_Name" property="parentSceneName" />
+		<result column="system_Scene_Name" property="systemSceneName" />
+		<result column="cell_Relate_Count" property="cellRelateCount" />
+		<result column="geometry_name" property="geometryName" />
+		<result column="tag" property="tag" />
+	</resultMap>
+
+
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneGridCountInfoPO"
+		id="SceneGridCountInfo">
+		<result column="scene_Name" property="sceneName" />
+		<result column="scene_Id" property="sceneId" />
+		<result column="step" property="step" />
+		<result column="extend_Width" property="extendWidth" />
+		<result column="grid_Border_Length" property="gridBorderLength" />
+		<result column="grid_Count" property="gridCount" />
+	</resultMap>
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.IniFileInfoPO"
+		id="IniFileInfoPO">
+		<result column="int_Id" property="intId" />
+		<result column="name" property="name" />
+		<result column="region_Id" property="regionId" />
+		<result column="cur_Level" property="curLevel" />
+		<result column="technology" property="technology" />
+		<result column="is_Sharing" property="isSharing" />
+		<result column="is_Need_Scene_Size" property="isNeedSceneSize" />
+		<result column="is_Need_Gird_Size" property="isNeedGirdSize" />
+		<result column="is_Need_Cell_Size" property="isNeedCellSize" />
+		<result column="is_Need_Bigdata_Sum"
+			property="isNeedBigdataSum" />
+		<result column="is_Need_Performance_Sum"
+			property="isNeedPerformanceSum" />
+		<result column="tree_ids" property="treeIds" />
+		<result column="tree_Names" property="treeNames" />
+		<result column="cellIds" property="cellIds" />
+	</resultMap>
+
+
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.OldIniFileInfoPO"
+		id="OldIniFileInfoPO">
+		<result column="cell_Id" property="cellId" />
+		<result column="scene_Info" property="sceneInfo" />
+	</resultMap>
+
+
+
+
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.DefaultSceneTreeInfoPO"
+		id="DefaultSceneTreeInfo">
+		<result column="int_Id" property="intId" />
+		<result column="name" property="name" />
+		<result column="is_Sharing" property="isSharing" />
+		<result column="parent_Id" property="parentId" />
+		<result column="cell_Relate_Count" property="cellRelateCount" />
+		<result column="is_exist_geojson" property="isExistGeojson" />
+	</resultMap>
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneRelateCellDetaildInfoPO"
+		id="SceneRelateCellDetaildInfoPO">
+		<result column="int_Id" property="intId" />
+		<result column="region_Name" property="regionName" />
+		<result column="city_Name" property="cityName" />
+		<result column="name" property="name" />
+		<result column="zh_Name" property="zhName" />
+		<result column="cgi" property="cgi" />
+		<result column="tac" property="tac" />
+		<result column="pci" property="pci" />
+		<result column="cover_Type_Name" property="coverTypeName" />
+		<result column="work_Frqband" property="workFrqband" />
+		<result column="vendor_Name" property="vendorName" />
+	</resultMap>
+
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneTreeIdsNamesPO"
+		id="SceneTreeIdsNamesPO">
+		<result column="tree_Ids" property="treeIds" />
+		<result column="tree_Names" property="treeNames" />
+	</resultMap>
+
+	<sql id="Grid_Base_Column_List">
+		grid_leftbottom_latitude,
+		grid_righttop_longitude,
+		grid_border_length,
+		grid_righttop_latitude,
+		grid_lefttop_longitude,
+		scene_name,
+		scene_id,
+		grid_id,
+		insert_time,
+		grid_leftbottom_longitude,
+		scene_type,
+		region_id,
+		city_id,
+		city_name,
+		grid_lefttop_latitude,
+		grid_rightbottom_longitude,
+		grid_rightbottom_latitude,
+		region_name,
+		dtgrid_Leftbottom_Latitude,
+		dtgrid_Lefttop_Longitude,
+		dtgrid_Lefttop_Latitude,
+		dtgrid_Righttop_Longitude,
+		dtgrid_Leftbottom_Longitude,
+		dtgrid_Id,
+		dtgrid_Righttop_Latitude,
+		dtgrid_Rightbottom_Longitude,
+		dtgrid_Rightbottom_Latitude,
+		dtgrid_Name,
+		STEP,
+		EXTEND_WIDTH
+	</sql>
+
+
+
+	<!-- 根据父场景编号查询场景基本信息 -->
+	<select id="selectSceneBaseInfoByParentId"
+		resultMap="sceneBaseInfoPO">
+		select
+		a.int_Id,a.Name,a.parent_Id,
+		(select count(*) from
+		TV3_SCENE_INFO where parent_Id= a.int_Id) as child_count
+		from
+		TV3_SCENE_INFO a where parent_Id =
+		#{parentId}
+	</select>
+
+	<!-- 查询缺省场景树信息 -->
+	<select id="selectDefaultSceneTreeInfo"
+		resultMap="DefaultSceneTreeInfo">
+		select
+		int_Id,
+		Name,
+		is_Sharing,
+		parent_Id,
+		(select count(0)
+		from
+		tv3_scene_cell x
+		WHERE
+		scene_id=
+		tv3_scene_info.int_Id)
+		cell_Relate_Count,
+		CASE WHEN geojson IS NOT NULL AND
+		DBMS_LOB.GETLENGTH(geojson) &lt;&gt; 0 THEN 1
+		ELSE 0 END
+		as
+		is_exist_geojson
+		from
+		TV3_SCENE_INFO
+		where 1=1
+		<if test="sceneId != null">
+			and int_Id like #{sceneId}
+		</if>
+		<if test="sceneName != null">
+			and int_Id like (select to_char(int_id)||'%' from
+			TV3_SCENE_INFO where
+			name=#{sceneName})
+		</if>
+		and
+		is_Sharing = 1
+		or
+		create_Userid =
+		#{createUserid}
+	</select>
+
+	<!-- 查询全部缺省场景树信息 -->
+	<select id="selectAllDefaultSceneTreeInfo"
+		resultMap="DefaultSceneTreeInfo">
+		select
+		int_Id,
+		Name,
+		is_Sharing,
+		parent_Id,
+		(select count(0)
+		from
+		tv3_scene_cell x
+		WHERE
+		scene_id=
+		tv3_scene_info.int_Id)
+		cell_Relate_Count,
+		CASE WHEN geojson IS NOT NULL AND
+		DBMS_LOB.GETLENGTH(geojson) &lt;&gt; 0 THEN 1
+		ELSE 0 END
+		as
+		is_exist_geojson
+		from
+		TV3_SCENE_INFO
+		where 1=1
+		<if test="sceneId != null">
+			and int_Id like #{sceneId}
+		</if>
+		<if test="sceneName != null">
+			and int_Id like (select to_char(int_id)||'%' from
+			TV3_SCENE_INFO where
+			name=#{sceneName})
+		</if>
+	</select>
+
+
+	<!-- 根据场景id查询场景详细信息 -->
+	<select id="selectSceneDetailedInfoById"
+		resultMap="sceneDetailedInfo">
+		select
+		int_id ,
+		name ,
+		region_id ,
+		region_name ,
+		city_id ,
+		city_name ,
+		image_name ,
+		acquire_way ,
+		create_userid ,
+		create_username ,
+		geometry_id ,
+		centriod_lon ,
+		centriod_lat ,
+		geojson ,
+		geojson_type ,
+		scene_length ,
+		scene_area ,
+		description ,
+		cur_level ,
+		root_id ,
+		parent_id ,
+		order_no ,
+		technology ,
+		is_need_scene_size ,
+		is_need_gird_size ,
+		is_need_cell_size ,
+		is_need_bigdata_sum ,
+		is_need_performance_sum ,
+		is_locking ,
+		is_sharing ,
+		create_time ,
+		tag,
+		(select x.Name
+		from TV3_SCENE_INFO x WHERE int_id=
+		TV3_SCENE_INFO.parent_Id)
+		parent_Scene_Name,
+		(select x.Name
+		from
+		TV3_SCENE_INFO x WHERE
+		int_id= TV3_SCENE_INFO.root_id)
+		system_Scene_Name,
+		(select count(0)
+		from tv3_scene_cell x WHERE
+		scene_id= tv3_scene_info.int_Id)
+		cell_Relate_Count,
+		(select x.name
+		from
+		tv3_gis_geometry x WHERE
+		INT_ID=
+		tv3_scene_info.geometry_id)
+		geometry_name
+		from
+		TV3_SCENE_INFO
+		where 1=1
+		<if test="intId != null">
+			and int_Id =#{intId}
+		</if>
+	</select>
+
+
+
+
+	<!-- 根据场景级别、根场景id、场景名称查询场景详细信息 -->
+	<select id="selectSceneDetailedInfoByWhere"
+		resultMap="sceneDetailedInfo">
+		select
+		int_id ,
+		name ,
+		region_id ,
+		region_name ,
+		city_id ,
+		city_name ,
+		image_name ,
+		acquire_way ,
+		create_userid ,
+		create_username ,
+		geometry_id ,
+		centriod_lon ,
+		centriod_lat ,
+		geojson ,
+		geojson_type ,
+		scene_length ,
+		scene_area ,
+		description ,
+		cur_level ,
+		root_id ,
+		parent_id ,
+		order_no ,
+		technology ,
+		is_need_scene_size ,
+		is_need_gird_size ,
+		is_need_cell_size ,
+		is_need_bigdata_sum ,
+		is_need_performance_sum ,
+		is_locking ,
+		is_sharing ,
+		create_time ,
+		tag ,
+		(select x.Name
+		from TV3_SCENE_INFO x WHERE int_id=
+		TV3_SCENE_INFO.parent_Id)
+		parent_Scene_Name,
+		(select x.Name
+		from
+		TV3_SCENE_INFO x WHERE
+		int_id= TV3_SCENE_INFO.root_id)
+		system_Scene_Name,
+		(select count(0)
+		from tv3_scene_cell x WHERE
+		scene_id= tv3_scene_info.int_Id)
+		cell_Relate_Count
+		from
+		TV3_SCENE_INFO
+		where 1=1
+		<if test="curLevel != null">
+			and cur_Level =#{curLevel}
+		</if>
+		<if test="systemId != null">
+			and root_id =#{systemId}
+		</if>
+		<if test="sceneName != null">
+			and Name like #{sceneName}
+		</if>
+	</select>
+
+
+
+	<!-- 查询统计场景栅格信息 -->
+	<select id="countGridInfoBySceneId"
+		resultMap="SceneGridCountInfo">
+		select
+		g.scene_id,g.scene_name,dt.step,dt.extend_width,g.grid_Border_Length,count(*)
+		as
+		grid_Count from tv3_scene_grid g left join tv3_scene_dtgrid dt on
+		g.dtgrid_id=dt.int_id where g.scene_id=#{sceneId}
+		group by
+		g.scene_id,g.scene_name,dt.step,dt.extend_width,g.grid_Border_Length
+	</select>
+
+
+
+	<!-- 查询底层采集的ini文件信息 -->
+	<select id="selectIniFileInfo" resultMap="IniFileInfoPO">
+		select a.int_id ,
+		a.name ,
+		a.region_id ,
+		a.cur_level ,
+		a.technology ,
+		a.is_sharing ,
+		a.is_need_scene_size ,
+		a.is_need_gird_size ,
+		a.is_need_cell_size ,
+		a.is_need_bigdata_sum ,
+		a.is_need_performance_sum
+		,
+		(select
+		NVL2(a6.int_id, a6.int_id || ',','')
+		||NVL2(a5.int_id, a5.int_id
+		||
+		',','')
+		||NVL2(a4.int_id, a4.int_id ||
+		',','')
+		||NVL2(a3.int_id,
+		a3.int_id || ',','')
+		||NVL2(a2.int_id,
+		a2.int_id || ',','')
+		||NVL2(a1.int_id, a1.int_id ,'') as tree_Ids
+		from
+		tv3_scene_info a1
+		left
+		join
+		tv3_scene_info a2
+		on a1.parent_id =
+		a2.int_id
+		left join
+		tv3_scene_info a3
+		on a2.parent_id
+		= a3.int_id
+		left
+		join
+		tv3_scene_info a4
+		on a3.parent_id =
+		a4.int_id
+		left
+		join
+		tv3_scene_info a5
+		on a4.parent_id =
+		a5.int_id
+		left join
+		tv3_scene_info a6
+		on a5.parent_id =
+		a6.int_id
+		where
+		a1.cur_level
+		&lt;6
+		and a1.int_id=a.parent_id
+		) as tree_Ids
+		,
+		(select
+		NVL2(a6.name, a6.name ||
+		',','')
+		||NVL2(a5.name, a5.name || ',','')
+		||NVL2(a4.name, a4.name ||
+		',','')
+		||NVL2(a3.name, a3.name || ',','')
+		||NVL2(a2.name, a2.name ||
+		',','')
+		||NVL2(a1.name, a1.name ,'') as
+		tree_Names
+		from
+		tv3_scene_info a1
+		left
+		join
+		tv3_scene_info a2
+		on a1.parent_id =
+		a2.int_id
+		left join
+		tv3_scene_info a3
+		on a2.parent_id
+		= a3.int_id
+		left
+		join
+		tv3_scene_info a4
+		on a3.parent_id =
+		a4.int_id
+		left
+		join
+		tv3_scene_info a5
+		on a4.parent_id =
+		a5.int_id
+		left join
+		tv3_scene_info a6
+		on a5.parent_id =
+		a6.int_id
+		where
+		a1.cur_level
+		&lt;6
+		and a1.int_id=a.parent_id
+		) as tree_Names
+		,rtrim((select
+		xmlagg(xmlparse(content cell_id||','
+		wellformed)
+		order by
+		cell_id).getclobval() as cellIds from
+		tv3_scene_cell b where
+		b.scene_id=a.int_id) ,',') as cellIds from
+		tv3_scene_info a
+	</select>
+
+	<select id="selectOldIniFileInfo" resultMap="OldIniFileInfoPO">
+		select
+		b.cell_id as
+		cell_id,
+		NVL2(a6.name, a6.int_id || ',' || a6.name||';','')
+		||
+		NVL2(a5.name,
+		concat( a5.int_id|| ','
+		||
+		a5.name,NVL2(a5.tree_ids,'&lt;'||'0'||'/'||'0'||'>','')||';')
+		, '')
+		||NVL2(a4.name,
+		concat(a4.int_id|| ',' ||
+		a4.name,NVL2(a4.tree_ids,'&lt;'||'0'||'/'||'0'||'>',
+		'')||';') , '')
+		||NVL2(a3.name,
+		concat(a3.int_id|| ',' ||
+		a3.name,NVL2(a3.tree_ids,'&lt;'||'0'||'/'||'0'||'>'
+		, '')||';') , '')
+		||NVL2(a2.name,
+		concat(a2.int_id|| ',' ||
+		a2.name,NVL2(a2.tree_ids,'&lt;'||'0'||'/'||'0'||'>'
+		, '')||';') , '')
+		||NVL2(a1.name,
+		concat(a1.int_id||',' ||
+		a1.name,NVL2(a1.tree_ids,'&lt;'||'0'||'/'||'0'||'>',
+		'') ) , '')
+		scene_info
+		from
+		tv3_scene_cell b,
+		tv3_scene_info a1
+		left join
+		tv3_scene_info a2
+		on a1.parent_id =
+		a2.int_id
+		left join
+		tv3_scene_info a3
+		on a2.parent_id
+		= a3.int_id
+		left
+		join tv3_scene_info a4
+		on a3.parent_id =
+		a4.int_id
+		left
+		join
+		tv3_scene_info a5
+		on a4.parent_id =
+		a5.int_id
+		left join
+		tv3_scene_info a6
+		on a5.parent_id = a6.int_id
+		where
+		a1.int_id =
+		b.scene_id
+		and a1.cur_level
+		&lt; 6
+	</select>
+
+
+
+
+
+
+
+
+	<!-- 查询场景 场景树编号、名称集合 -->
+	<select id="selectSceneTreeIdsNames"
+		parameterType="java.lang.Long" resultMap="SceneTreeIdsNamesPO">
+		select
+		NVL2(a6.int_id, a6.int_id || ',','')
+		||NVL2(a5.int_id, a5.int_id
+		||
+		',','')
+		||NVL2(a4.int_id, a4.int_id ||
+		',','')
+		||NVL2(a3.int_id,
+		a3.int_id || ',','')
+		||NVL2(a2.int_id,
+		a2.int_id || ',','')
+		||NVL2(a1.int_id, a1.int_id ,'') as tree_Ids,
+		NVL2(a6.name, a6.name ||
+		',','')
+		||NVL2(a5.name, a5.name || ',','')
+		||NVL2(a4.name, a4.name ||
+		',','')
+		||NVL2(a3.name, a3.name || ',','')
+		||NVL2(a2.name, a2.name ||
+		',','')
+		||NVL2(a1.name, a1.name ,'') as
+		tree_Names
+		from
+		tv3_scene_info a1
+		left join
+		tv3_scene_info a2
+		on a1.parent_id =
+		a2.int_id
+		left join
+		tv3_scene_info a3
+		on a2.parent_id
+		= a3.int_id
+		left
+		join
+		tv3_scene_info a4
+		on a3.parent_id =
+		a4.int_id
+		left
+		join
+		tv3_scene_info a5
+		on a4.parent_id =
+		a5.int_id
+		left join
+		tv3_scene_info a6
+		on a5.parent_id =
+		a6.int_id
+		where
+		a1.cur_level
+		&lt;6
+		<if test="parentId!=null">
+			and a1.int_id=#{parentId}
+		</if>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 批量插入栅格数据 -->
+	<insert id="insertBatchGridData" parameterType="java.util.List">
+		INSERT INTO tv3_scene_grid(
+		grid_id ,
+		grid_leftbottom_longitude ,
+		grid_leftbottom_latitude ,
+		grid_righttop_longitude ,
+		grid_righttop_latitude ,
+		grid_lefttop_longitude ,
+		grid_lefttop_latitude
+		,
+		grid_rightbottom_longitude ,
+		grid_rightbottom_latitude ,
+		region_name ,
+		region_id ,
+		city_name ,
+		city_id ,
+		scene_id ,
+		scene_name ,
+		insert_time ,
+		grid_border_length ,
+		int_id ,
+		dtgrid_id
+		)
+		<foreach collection="list" item="item" index="index"
+			separator=" union all ">
+			select
+			#{item.gridId},
+			#{item.gridLeftbottomLongitude},
+			#{item.gridLeftbottomLatitude},
+			#{item.gridRighttopLongitude},
+			#{item.gridRighttopLatitude},
+			#{item.gridLefttopLongitude},
+			#{item.gridLefttopLatitude},
+			#{item.gridRightbottomLongitude},
+			#{item.gridRightbottomLatitude},
+			#{item.regionName},
+			#{item.regionId},
+			#{item.cityName},
+			#{item.cityId},
+			#{item.sceneId},
+			#{item.sceneName},
+			#{item.insertTime},
+			#{item.gridBorderLength},
+			#{item.intId},
+			#{item.dtgridId}
+			from
+			dual
+		</foreach>
+	</insert>
+
+
+	<!-- 批量插入路段数据 -->
+	<insert id="insertBatchDTGridData"
+		parameterType="java.util.List">
+		INSERT INTO tv3_scene_dtgrid(
+		int_id ,
+		dtgrid_name ,
+		dtgrid_leftbottom_longitude ,
+		dtgrid_leftbottom_latitude ,
+		dtgrid_lefttop_longitude ,
+		dtgrid_lefttop_latitude ,
+		dtgrid_righttop_longitude ,
+		dtgrid_righttop_latitude ,
+		dtgrid_rightbottom_longitude ,
+		dtgrid_rightbottom_latitude ,
+		step ,
+		extend_width ,
+		order_num,
+		SCENE_ID,
+		SCENE_NAME
+		)
+		<foreach collection="list" item="item" index="index"
+			separator=" union all ">
+			select
+			#{item.intId},
+			#{item.dtgridName},
+			#{item.dtgridLeftbottomLongitude},
+			#{item.dtgridLeftbottomLatitude},
+			#{item.dtgridLefttopLongitude},
+			#{item.dtgridLefttopLatitude},
+			#{item.dtgridRighttopLongitude},
+			#{item.dtgridRighttopLatitude},
+			#{item.dtgridRightbottomLongitude},
+			#{item.dtgridRightbottomLatitude},
+			#{item.step},
+			#{item.extendWidth},
+			#{item.orderNum},
+			#{item.sceneId},
+			#{item.sceneName}
+			from
+			dual
+		</foreach>
+	</insert>
+
+	<!-- 根据制式，场景id查询关联小区详情信息 -->
+	<select id="selectRelateCellDetaildInfoBySceneId"
+		resultMap="SceneRelateCellDetaildInfoPO">
+		select distinct
+		<choose>
+			<when test="sceneTechnology=='GSM'">
+				t.int_id,rc.region_name,rc.city_name,t.name,t.zh_name,t.cgi,t.lac as
+				tac,t.ci as pci,decode(t.indoor_support,'是','室内','室外')
+				cover_Type_Name
+				,c.BCCH_FEQ as work_Frqband,t.vendor_name
+			</when>
+			<when test="sceneTechnology=='LTE'">
+				t.int_id,rc.region_name,rc.city_name,t.name,t.zh_name,t.cgi,t.tac,t.pci,decode(t.cover_type,1,'室内','室外')
+				cover_Type_Name,t.WORK_FRQBAND,t.vendor_name
+			</when>
+			<when test="sceneTechnology=='NB-IOT'">
+				t.int_id,rc.region_name,rc.city_name,t.name,t.zh_name,t.cgi,t.tac,t.pci,decode(t.cover_type,1,'室内','室外')
+				indoor_support,t.WORK_FRQBAND,t.vendor_name
+			</when>
+		</choose>
+		from
+		(select cell_id
+		from
+		tv3_scene_cell where scene_id=#{sceneId}) tsc
+		<choose>
+			<when test="sceneTechnology=='GSM'">
+				left join tco_pro_cell t on t.int_id=tsc.cell_id
+				left
+				join cell c on c.int_id = t.int_id
+			</when>
+			<when test="sceneTechnology=='LTE'">
+				left join tco_pro_eutrancell t on
+				t.int_id=tsc.cell_id
+				left join eutrancell c on c.int_id = t.int_id
+			</when>
+			<when test="sceneTechnology=='NB-IOT'">
+				left join tco_pro_eutrancellNB t on
+				t.int_id=tsc.cell_id
+				left join eutrancellNB c on c.int_id = t.int_id
+			</when>
+		</choose>
+		left join region_city rc on c.city_id = rc.city_id
+	</select>
+
+
+
+
+	<!-- 查询在一定经纬度内的某个制式小区信息 -->
+	<select id="selectCellByLonLat"
+		resultType="com.boco.rnop.framework.component.scene.entity.tk.BaseCellRelateInfo">
+		select a.int_id intId,
+		a.cgi cgi,
+		a.longitude,
+		a.latitude,
+		a.zh_name
+		zhName,
+		c.region_name regionName,
+		c.region_id regionId,
+		c.city_name
+		cityName,
+		c.city_id cityId
+		from
+		<choose>
+			<when test="technology == 'GSM'">
+				TCO_PRO_CELL a left join cell b
+			</when>
+			<when test="technology == 'LTE'">
+				TCO_PRO_EUTRANCELL a left join EUTRANCELL b
+			</when>
+			<when test="technology == 'NB-IOT'">
+				tco_pro_eutrancellNB a left join eutrancellNB
+			</when>
+			<otherwise>
+				TCO_PRO_EUTRANCELL a left join EUTRANCELL b
+			</otherwise>
+		</choose>
+		on
+		a.int_id=b.int_id left join
+		region_city c on b.city_id=c.city_id
+		where a.longitude > #{minLongitude}
+		and a.longitude &lt;
+		#{maxLongitude}
+		and a.latitude > #{minLatitude}
+		and a.latitude &lt;
+		#{maxLatitude}
+	</select>
+
+
+
+	<!-- 根据CGI查询某个制式小区信息 -->
+	<select id="selectCellByCgis"
+		resultType="com.boco.rnop.framework.component.scene.entity.tk.BaseCellRelateInfo">
+		select a.int_id intId,
+		a.cgi cgi,
+		a.longitude,
+		a.latitude,
+		a.zh_name
+		zhName,
+		c.region_name regionName,
+		c.region_id regionId,
+		c.city_name
+		cityName,
+		c.city_id cityId
+		from
+		<choose>
+			<when test="technology == 'GSM'">
+				TCO_PRO_CELL a left join cell b
+			</when>
+			<when test="technology == 'LTE'">
+				TCO_PRO_EUTRANCELL a left join EUTRANCELL b
+			</when>
+			<when test="technology == 'NB-IOT'">
+				tco_pro_eutrancellNB a left join eutrancellNB
+			</when>
+			<otherwise>
+				TCO_PRO_EUTRANCELL a left join EUTRANCELL b
+			</otherwise>
+		</choose>
+		on
+		a.int_id=b.int_id left join
+		region_city c on b.city_id=c.city_id
+		where 1=1
+		<if test="cgis != null and cgis.size > 0">
+			and a.cgi in
+			<foreach collection="cgis" index="index" item="item" open="("
+				close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
