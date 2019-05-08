@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper
+	namespace="com.boco.rnop.framework.component.scene.mapper.def.ICrawlTaskManagerMapper">
+
+
+
+
+	<!-- 批量插入地理图元临时表数据 -->
+	<insert id="insertBatchGeometryTemporary" parameterType="java.util.List">
+		begin
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into TV3_GIS_GEOMETRY_TEMPORARY(
+			int_id ,
+			custom_Id ,
+			name ,
+			centriod_lon ,
+			centriod_lat ,
+			scene_type_id ,
+			geometry_json ,
+			region_name ,
+			region_id ,
+			city_name ,
+			city_id ,
+			geometry_length ,
+			geometry_area ,
+			insert_time ,
+			create_username ,
+			batch_num ,
+			task_id ,
+			address ,
+			poi_type_name ,
+			geojson_type ,
+			create_userid ,
+			longitude ,
+			latitude ,
+			geometry_type ,
+			geometry_type_name ,
+			uuid ,
+			acquire_way_id ,
+			acquire_way_name
+			)
+			values(
+			#{item.intId},
+			#{item.customId},
+			#{item.name},
+			#{item.centriodLon},
+			#{item.centriodLat},
+			#{item.sceneTypeId},
+			#{item.geometryJson,jdbcType=CLOB},
+			#{item.regionName},
+			#{item.regionId},
+			#{item.cityName},
+			#{item.cityId},
+			#{item.geometryLength},
+			#{item.geometryArea},
+			#{item.insertTime},
+			#{item.createUsername},
+			#{item.batchNum},
+			#{item.taskId},
+			#{item.address},
+			#{item.poiTypeName},
+			#{item.geojsonType},
+			#{item.createUserid},
+			#{item.longitude},
+			#{item.latitude},
+			#{item.geometryType},
+			#{item.geometryTypeName},
+			#{item.uuid},
+			#{item.acquireWayId},
+			#{item.acquireWayName}
+			)
+		</foreach>
+		;end;
+	</insert>
+
+	<!-- 根据地理图元数据临时表,全部地理图元数据合并入库 -->
+	<update id="mergeAllGeometryDataByGeometryTemporary">
+		merge
+		into
+		TV3_GIS_GEOMETRY
+		using (select
+		X.int_id ,
+		X.custom_Id ,
+		X.name ,
+		X.centriod_lon ,
+		X.centriod_lat ,
+		X.scene_type_id ,
+		X.geometry_json ,
+		X.region_name ,
+		Y.region_id ,
+		X.city_name ,
+		Z.city_id ,
+		X.geometry_length ,
+		X.geometry_area ,
+		X.insert_time ,
+		X.create_username ,
+		X.batch_num ,
+		X.task_id ,
+		X.address ,
+		X.poi_type_name ,
+		X.geojson_type ,
+		X.create_userid ,
+		X.longitude ,
+		X.latitude ,
+		X.geometry_type ,
+		X.geometry_type_name ,
+		X.uuid ,
+		X.acquire_way_id ,
+		X.acquire_way_name
+		FROM (select * from
+		TV3_GIS_GEOMETRY_TEMPORARY
+		where batch_num=
+		#{batchNum})
+		X left join
+		(select REGION_NAME,REGION_id from
+		region_city
+		group
+		by
+		REGION_NAME,REGION_id ) Y
+		on
+		X.REGION_NAME=Y.REGION_NAME
+		left join
+		(select city_id,city_name from
+		region_city
+		group
+		by
+		city_id,city_name) Z
+		on
+		X.city_name=Z.city_name
+		) tab2
+		on((TV3_GIS_GEOMETRY.uuid=tab2.uuid and
+		TV3_GIS_GEOMETRY.scene_type_id=tab2.scene_type_id) or
+		(TV3_GIS_GEOMETRY.name=tab2.name and
+		TV3_GIS_GEOMETRY.acquire_way_id=tab2.acquire_way_id) )
+		when matched
+		then
+		update
+		set
+		TV3_GIS_GEOMETRY.int_id=tab2.int_id,
+		TV3_GIS_GEOMETRY.custom_Id=tab2.custom_Id,
+		TV3_GIS_GEOMETRY.name=tab2.name,
+		TV3_GIS_GEOMETRY.centriod_lon=tab2.centriod_lon,
+		TV3_GIS_GEOMETRY.centriod_lat=tab2.centriod_lat,
+		TV3_GIS_GEOMETRY.scene_type_id=tab2.scene_type_id,
+		TV3_GIS_GEOMETRY.geometry_json=tab2.geometry_json,
+		TV3_GIS_GEOMETRY.region_name=tab2.region_name,
+		TV3_GIS_GEOMETRY.region_id=tab2.region_id,
+		TV3_GIS_GEOMETRY.city_name=tab2.city_name,
+		TV3_GIS_GEOMETRY.city_id=tab2.city_id,
+		TV3_GIS_GEOMETRY.geometry_length=tab2.geometry_length,
+		TV3_GIS_GEOMETRY.geometry_area=tab2.geometry_area,
+		TV3_GIS_GEOMETRY.insert_time=tab2.insert_time,
+		TV3_GIS_GEOMETRY.create_username=tab2.create_username,
+		TV3_GIS_GEOMETRY.task_id=tab2.task_id,
+		TV3_GIS_GEOMETRY.address=tab2.address,
+		TV3_GIS_GEOMETRY.poi_type_name=tab2.poi_type_name,
+		TV3_GIS_GEOMETRY.geojson_type=tab2.geojson_type,
+		TV3_GIS_GEOMETRY.create_userid=tab2.create_userid,
+		TV3_GIS_GEOMETRY.longitude=tab2.longitude,
+		TV3_GIS_GEOMETRY.latitude=tab2.latitude,
+		TV3_GIS_GEOMETRY.geometry_type=tab2.geometry_type,
+		TV3_GIS_GEOMETRY.geometry_type_name=tab2.geometry_type_name,
+		TV3_GIS_GEOMETRY.uuid=tab2.uuid,
+		TV3_GIS_GEOMETRY.acquire_way_id=tab2.acquire_way_id,
+		TV3_GIS_GEOMETRY.acquire_way_name=tab2.acquire_way_name
+		when not
+		matched then
+		insert
+		(int_id ,
+		custom_Id ,
+		name ,
+		centriod_lon ,
+		centriod_lat ,
+		scene_type_id ,
+		geometry_json ,
+		region_name ,
+		region_id ,
+		city_name ,
+		city_id ,
+		geometry_length ,
+		geometry_area ,
+		insert_time ,
+		create_username ,
+		task_id ,
+		address ,
+		poi_type_name ,
+		geojson_type ,
+		create_userid ,
+		longitude ,
+		latitude ,
+		geometry_type ,
+		geometry_type_name,
+		uuid ,
+		acquire_way_id ,
+		acquire_way_name)
+		values
+		(
+		tab2.int_id ,
+		tab2.custom_Id ,
+		tab2.name ,
+		tab2.centriod_lon ,
+		tab2.centriod_lat ,
+		tab2.scene_type_id ,
+		tab2.geometry_json ,
+		tab2.region_name ,
+		tab2.region_id ,
+		tab2.city_name ,
+		tab2.city_id ,
+		tab2.geometry_length ,
+		tab2.geometry_area ,
+		tab2.insert_time ,
+		tab2.create_username ,
+		tab2.task_id ,
+		tab2.address ,
+		tab2.poi_type_name ,
+		tab2.geojson_type ,
+		tab2.create_userid ,
+		tab2.longitude ,
+		tab2.latitude ,
+		tab2.geometry_type,
+		tab2.geometry_type_name ,
+		tab2.uuid ,
+		tab2.acquire_way_id ,
+		tab2.acquire_way_name
+		)
+	</update>
+
+	<!-- 根据地理图元数据临时表,新生成地理图元数据合并入库 -->
+	<update id="mergeNewGeometryDataByGeometryTemporary">
+		merge
+		into
+		TV3_GIS_GEOMETRY
+		using (
+		select
+		X.int_id ,
+		X.custom_Id ,
+		X.name ,
+		X.centriod_lon ,
+		X.centriod_lat ,
+		X.scene_type_id ,
+		X.geometry_json ,
+		X.region_name ,
+		Y.region_id ,
+		X.city_name ,
+		Z.city_id ,
+		X.geometry_length ,
+		X.geometry_area ,
+		X.insert_time ,
+		X.create_username ,
+		X.batch_num ,
+		X.task_id ,
+		X.address ,
+		X.poi_type_name ,
+		X.geojson_type ,
+		X.create_userid ,
+		X.longitude ,
+		X.latitude ,
+		X.geometry_type ,
+		X.geometry_type_name ,
+		X.uuid ,
+		X.acquire_way_id ,
+		X.acquire_way_name
+		FROM (select * from
+		TV3_GIS_GEOMETRY_TEMPORARY
+		where batch_num=
+		#{batchNum}) X left join
+		(select REGION_NAME,REGION_id from
+		region_city
+		group
+		by
+		REGION_NAME,REGION_id ) Y
+		on
+		X.REGION_NAME=Y.REGION_NAME
+		left join
+		(select city_id,city_name from
+		region_city
+		group
+		by
+		city_id,city_name) Z
+		on
+		X.city_name=Z.city_name
+		) tab2
+		on ((TV3_GIS_GEOMETRY.uuid=tab2.uuid and
+		TV3_GIS_GEOMETRY.scene_type_id=tab2.scene_type_id) or
+		(TV3_GIS_GEOMETRY.name=tab2.name and
+		TV3_GIS_GEOMETRY.acquire_way_id=tab2.acquire_way_id) )
+		when not matched
+		then
+		insert
+		(int_id ,
+		custom_Id ,
+		name ,
+		centriod_lon ,
+		centriod_lat ,
+		scene_type_id ,
+		geometry_json ,
+		region_name ,
+		region_id ,
+		city_name ,
+		city_id ,
+		geometry_length ,
+		geometry_area ,
+		insert_time ,
+		create_username,
+		task_id ,
+		address ,
+		poi_type_name ,
+		geojson_type ,
+		create_userid ,
+		longitude ,
+		latitude ,
+		geometry_type ,
+		geometry_type_name,
+		uuid ,
+		acquire_way_id ,
+		acquire_way_name)
+		values
+		(
+		tab2.int_id ,
+		tab2.custom_Id ,
+		tab2.name ,
+		tab2.centriod_lon ,
+		tab2.centriod_lat ,
+		tab2.scene_type_id ,
+		tab2.geometry_json ,
+		tab2.region_name ,
+		tab2.region_id ,
+		tab2.city_name ,
+		tab2.city_id ,
+		tab2.geometry_length ,
+		tab2.geometry_area ,
+		tab2.insert_time ,
+		tab2.create_username ,
+		tab2.task_id ,
+		tab2.address ,
+		tab2.poi_type_name ,
+		tab2.geojson_type ,
+		tab2.create_userid ,
+		tab2.longitude ,
+		tab2.latitude ,
+		tab2.geometry_type,
+		tab2.geometry_type_name ,
+		tab2.uuid ,
+		tab2.acquire_way_id ,
+		tab2.acquire_way_name
+		)
+	</update>
+
+
+	<!-- 根据批次号删除临时地理图元数据 -->
+	<delete id="deleteGisGeometryTemporaryByBatchNum">
+		DELETE from TV3_GIS_GEOMETRY_TEMPORARY
+		<if test="batchNum!=null">
+			where
+			BATCH_NUM=#{batchNum}
+		</if>
+	</delete>
+
+
+
+	<!-- 更新爬取任务已完成栅格数量 -->
+	<update id="updateCrawlTaskEndGridNum">
+		update tv3_poi_crawl_task set
+		task_end_grid_num=(task_end_grid_num+#{taskEndGridNum})
+		where
+		int_id=#{intId}
+	</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

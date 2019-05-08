@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper
+	namespace="com.boco.rnop.framework.component.scene.mapper.def.ICommonMapper">
+
+	<!-- 地市信息 -->
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.RegionCityPO"
+		id="regionCity">
+		<result column="region_id" property="regionId" />
+		<result column="region_name" property="regionName" />
+	</resultMap>
+
+	<!-- 网优场景类型 -->
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.SceneTypePO"
+		id="sceneTypePO">
+		<result column="scene_type_name" property="sceneTypeName" />
+		<result column="scene_type_id" property="sceneTypeId" />
+	</resultMap>
+
+
+	<!--查询地市（不带全省） -->
+	<select id="selectRegion" resultMap="regionCity">
+		select
+		city_id as region_id,
+		city_name as
+		region_name
+		from
+		region_city
+		where 1=1
+		and region_id in (select
+		city_id from region_city
+		where
+		region_id = -1)
+		order by order_no
+	</select>
+
+
+	<select id="selectRegionAndAll" resultMap="regionCity">
+		select -1 region_id,
+		'全省' region_name from dual union
+		all
+		select
+		city_id as
+		region_id,
+		city_name as region_name,
+		order_no
+		from
+		region_city
+		where 1=1
+		and region_id
+		in (select city_id from region_city
+		where
+		region_id = -1)
+		order by
+		order_no
+	</select>
+
+
+	<!-- 根据省名称模糊查询省编号 -->
+	<select id="selectProvinceIdByName" resultType="java.lang.Long">
+		select
+		province_id from region_city where
+		province_name like #{provinceName}
+		and rownum =1 group by
+		province_id,province_name
+	</select>
+
+	<!-- 根据地市名称模糊查询省编号 -->
+	<select id="selectRegionIdByName" resultType="java.lang.Long">
+		select region_id
+		from region_city where region_name
+		like #{regionName}
+		and rownum =1
+		group by region_id,region_name
+	</select>
+	<!-- 根据区县名称模糊查询省编号 -->
+	<select id="selectCityIdByName" resultType="java.lang.Long">
+		select city_id from
+		region_city where city_name like
+		#{cityName}
+		and rownum =1 group by
+		city_id,city_name
+	</select>
+
+
+
+	<!--查询类型字典表网优场景类型 -->
+	<select id="selectSceneType" resultMap="sceneTypePO">
+		select
+		scene_type_name,scene_type_id from tv3_poi_type_relation
+		group by
+		scene_type_name , scene_type_id
+	</select>
+</mapper>
