@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.boco.rnop.framework.component.scene.mapper.def.IDataSourceMapper">
+	
+	<!-- 统计各地市地理场景数据 -->
+	<select id = "countSceneDataByRegion" resultType = "com.boco.rnop.framework.component.scene.entity.po.CitySceneDataCountPO">
+		select 
+		region_id,
+		region_name,
+		count(*) as count   
+		from  tv3_gis_geometry   
+		group by region_id,region_name
+	</select>
+	
+	<!--  统计各类型地理场景数据量 -->
+	<select id="countSceneDataByType" resultType = "com.boco.rnop.framework.component.scene.entity.po.SceneTypeDataCountPO">
+		select 
+		scene_type_name as sceneType,count(*) as count 
+		from tv3_gis_geometry a,tv3_poi_type_relation b
+		where a.SCENE_TYPE_ID=b.SCENE_TYPE_ID
+		group by scene_type_name
+	</select> 
+</mapper>

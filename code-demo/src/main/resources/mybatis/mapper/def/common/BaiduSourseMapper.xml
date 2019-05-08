@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper
+	namespace="com.boco.rnop.framework.component.scene.mapper.def.IBaiduSourseMapper">
+
+	<resultMap
+		type="com.boco.rnop.framework.component.scene.entity.po.BaiduAkInfoPO"
+		id="baiduAkInfoPO">
+		<result column="int_id" property="intId" />
+		<result column="AK" property="ak" />
+		<result column="AK_TYPE_ID" property="akTypeId" />
+		<result column="AK_GEOCODING_TIMES" property="akGeocodingTimes" />
+		<result column="AK_RETRIEVAL_TIMES" property="akRetrievalTimes" />
+		<result column="AK_GEOCONV_TIMES" property="akGeoconvTimes" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="TYPE_NAME" property="typeName" />
+		<result column="GEOCODING_QUOTA" property="geocodingQuota" />
+		<result column="GEOCODING_CONCURRENCY"
+			property="geocodingConcurrency" />
+		<result column="RETRIEVAL_QUOTA" property="retrievalQuota" />
+		<result column="RETRIEVAL_CONCURRENCY"
+			property="retrievalConcurrency" />
+		<result column="geoconv_quota" property="geoconvQuota" />
+		<result column="geoconv_concurrency"
+			property="geoconvConcurrency" />
+	</resultMap>
+
+
+
+
+
+
+	<!--查询全部百度ak信息 -->
+	<select id="selectAllBaiduAk" resultMap="baiduAkInfoPO">
+		select a.int_id,
+		a.AK,a.AK_TYPE_ID,a.AK_GEOCODING_TIMES,a.AK_RETRIEVAL_TIMES,a.AK_GEOCONV_TIMES,a.UPDATE_DATE,
+		b.TYPE_NAME,b.GEOCODING_QUOTA,b.GEOCODING_CONCURRENCY,b.RETRIEVAL_QUOTA,b.RETRIEVAL_CONCURRENCY,
+		b.geoconv_quota,b.geoconv_concurrency
+		from TV3_MAP_AK
+		a,TV3_MAP_AK_type
+		b
+		where
+		a.ak_type_id=b.int_id
+	</select>
+
+	<!-- 新增一条百度ak信息 -->
+	<insert id="insertBaiduAk"
+		parameterType="com.boco.rnop.framework.component.scene.entity.qo.BaiduAkQO">
+		insert into
+		TV3_MAP_AK ( int_id,
+		AK, AK_TYPE_ID,
+		AK_GEOCODING_TIMES, AK_RETRIEVAL_TIMES,
+		UPDATE_DATE,AK_GEOCONV_TIMES)
+		values(
+		#{intId},#{ak},#{akTypeId},#{akGeocodingTimes},#{akRetrievalTimes},#{updateDate},#{akGeoconvTimes}
+		)
+	</insert>
+
+
+
+	<!-- 统计百度ak消耗信息 -->
+	<select id="countBaiduAk"
+		resultType="com.boco.rnop.framework.component.scene.entity.po.BaiduAkCountInfoPO">
+		select
+		sum(a.AK_GEOCODING_TIMES) as
+		akGeocodingTimes,(sum(b.GEOCODING_QUOTA)-sum(a.AK_GEOCODING_TIMES))
+		as
+		akGeocodingUsedTimes,
+		sum(a.AK_RETRIEVAL_TIMES) as
+		akRetrievalTimes
+		,(sum(b.retrieval_quota)-sum(a.AK_RETRIEVAL_TIMES))
+		as
+		akRetrievalUsedTimes,
+		sum(a.AK_GEOCONV_TIMES) as
+		akGeoconvTimes
+		,(sum(b.GEOCONV_QUOTA)-sum(a.AK_GEOCONV_TIMES))
+		as
+		akGeoconvUsedTimes
+		from TV3_MAP_AK a,TV3_MAP_AK_type
+		b where
+		a.ak_type_id=b.int_id
+	</select>
+
+
+	<!--更新ak次数 -->
+	<update id="updateAkTimes"
+		parameterType="com.boco.rnop.framework.component.scene.entity.qo.BaiduAkQO">
+		update
+		TV3_MAP_AK
+		set
+		AK_GEOCODING_TIMES =
+		#{akGeocodingTimes},
+		AK_RETRIEVAL_TIMES =
+		#{akRetrievalTimes},
+		AK_GEOCONV_TIMES =
+		#{akGeoconvTimes},UPDATE_DATE =
+		#{updateDate}
+		where
+		INT_ID =
+		#{intId}
+	</update>
+
+
+
+
+</mapper>
